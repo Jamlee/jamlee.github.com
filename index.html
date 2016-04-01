@@ -99,10 +99,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>php在php5.5的时候引入了generator和coroutine,从核心上提出了一种方法去写不阻塞的IO,当然这和node的event loop还是有比较大的区别的,它的主要理念是：<em>把几个大任务分别分成多个小步轮流执行，有某个小任务在等待系统io的话，就跳过它，执行下一个小任务，这样总体提升了代码的效率</em></p>
+<p>php在php5.5的时候引入了generator和coroutine,当然这和node的event loop还是有比较大的区别的。 yield 表达式 和php封装过系统底层的函数(select函数)可以一起写出非阻塞的io。</p>
 </blockquote>
 <h2 id="0x1-yield表达式是什么？"><a href="#0x1-yield表达式是什么？" class="headerlink" title="0x1: yield表达式是什么？"></a>0x1: yield表达式是什么？</h2><p>非常简单，描述yield表达式的只有两个关键词: 中断点 和 占位符（自己总结的两点，只属于一种感性的记忆方式，并不是官方给出的专业词汇）。<br>举个简单的例子：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gen</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    $tid = (<span class="keyword">yield</span> <span class="number">1</span> + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">1</span>; $i &lt;= <span class="number">10</span>; ++$i) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"This is $tid task iteration $i.\n"</span>;</span><br><span class="line">        <span class="keyword">yield</span> $i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//$t1是[generator](http://php.net/manual/en/class.generator.php)类的实例(instance)</span></span><br><span class="line">$t1 = gen();</span><br><span class="line"><span class="comment">//取出yield后面的表达式的结构，并没有进行赋值就暂停了当前的操作 `$tid = (yield 1 + 1) `，（特性一：中断点)</span></span><br><span class="line">$r1 = $t1-&gt;current();</span><br><span class="line"><span class="comment">//结果为 2</span></span><br><span class="line"><span class="keyword">echo</span> $r1;</span><br><span class="line"><span class="comment">//将字符'+++'（特性二：占位符)，替换到刚才暂停的地方 `$tid = '+++++'`，并进入for循环，遇见yield表达式，获取yield 表达式后面的值，并保存当前的局部变量的值，yield后面是$i，返回$i</span></span><br><span class="line">var_dump($t1-&gt;send(<span class="string">'+++'</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">//$t1是[generator](http://php.net/manual/en/class.generator.php)类的实例(instance)</span></span><br><span class="line">$t1 = gen();</span><br><span class="line"><span class="comment">//取出yield后面的表达式的结构，并没有进行赋值就暂停了当前的操作 `$tid = (yield 1 + 1) `，（特性一：中断点)</span></span><br><span class="line">$r1 = $t1-&gt;current();</span><br><span class="line"><span class="comment">//结果为 2</span></span><br><span class="line"><span class="keyword">echo</span> $r1;</span><br><span class="line"><span class="comment">//将字符'+++'（特性二：占位符)，替换到刚才暂停的地方 `$tid = '+++++'`，并进入for循环，遇见yield表达式，获取yield 表达式后面的值，并保存当前的局部变量的值，yield后面是$i，返回$i</span></span><br><span class="line">var_dump($t1-&gt;send(<span class="string">'+++'</span>));</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gen</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    $tid = (<span class="keyword">yield</span> <span class="number">1</span> + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">1</span>; $i &lt;= <span class="number">10</span>; ++$i) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"This is $tid task iteration $i.\n"</span>;</span><br><span class="line">        <span class="keyword">yield</span> $i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//$t1是[generator](http://php.net/manual/en/class.generator.php)类的实例(instance)</span></span><br><span class="line">$t1 = gen();</span><br><span class="line"><span class="comment">//取出yield后面的表达式的结构，并没有进行赋值就暂停了当前的操作 `$tid = (yield 1 + 1) `，（特性一：中断点)</span></span><br><span class="line">$r1 = $t1-&gt;current();</span><br><span class="line"><span class="comment">//结果为 2</span></span><br><span class="line"><span class="keyword">echo</span> $r1;</span><br><span class="line"><span class="comment">//将字符'+++'（特性二：占位符)，替换到刚才暂停的地方 `$tid = '+++++'`，并进入for循环，遇见yield表达式，获取yield 表达式后面的值，并保存当前的局部变量的值，yield后面是$i，返回$i</span></span><br><span class="line">var_dump($t1-&gt;send(<span class="string">'+++'</span>));</span><br></pre></td></tr></table></figure>
 <p>这里 <code>current</code>方法是暂停并返回获取当前<code>yield</code>表达式的值。send方法是先替换之前暂停时的<code>yield表达式</code>所处的位置的值，再开始执行，直到遇到下一个yield表达式，再取表达式的结果，暂停并保存当前的局部变量的值。在这里我注意到send方法总是同时得确定两个yield表达式的位置，第一个yield表达式的值被替换，再去寻找第二个表达式的值（yield <code>$i</code>里面的<code>$i</code>），再次保存当前的状态，返回 yield表达式 后面的值。依次类推。<br>这里有个需要思考的问题就是如果一开始就用send方法不用current()会怎么样？ 答案是send方法在第一次运行之前会隐含调用rewind方法，会在函数第一个yield的地方中断保存局部变量，但是忽略它的返回值。</p>
         
           <p class="article-more-link">
@@ -113,7 +113,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://jamlee.cn/2015/10/05/yeild-编写web服务程序/" data-id="cilengvnc000atyw23iy5sgrt" class="article-share-link" data-share="baidu" data-title="yield 编写web服务程序">Share</a>
+        <a data-url="http://jamlee.cn/2015/10/05/yeild-编写web服务程序/" data-id="cimh6hjmd000ew8w2nk0jl3xf" class="article-share-link" data-share="baidu" data-title="yield 编写web服务程序">分享到</a>
       
 
       
@@ -163,7 +163,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://jamlee.cn/2015/06/24/docker快速搭建易于分享和更新的composer缓存库/" data-id="cilengvn90007tyw27t5915qo" class="article-share-link" data-share="baidu" data-title="docker快速搭建易于分享和更新的composer缓存库">Share</a>
+        <a data-url="http://jamlee.cn/2015/06/24/docker快速搭建易于分享和更新的composer缓存库/" data-id="cimh6hjm9000cw8w2sy1ri14d" class="article-share-link" data-share="baidu" data-title="docker快速搭建易于分享和更新的composer缓存库">分享到</a>
       
 
       
@@ -211,7 +211,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://jamlee.cn/2015/04/12/docker特权模式的影响/" data-id="cilengvna0009tyw2hrgs2mty" class="article-share-link" data-share="baidu" data-title="docker特权模式的影响">Share</a>
+        <a data-url="http://jamlee.cn/2015/04/12/docker特权模式的影响/" data-id="cimh6hjmh000gw8w2heww40qh" class="article-share-link" data-share="baidu" data-title="docker特权模式的影响">分享到</a>
       
 
       
@@ -260,7 +260,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://jamlee.cn/2015/03/22/docker与精彩的shell/" data-id="cilengvmy0002tyw2uuk7caq6" class="article-share-link" data-share="baidu" data-title="docker与精彩的shell">Share</a>
+        <a data-url="http://jamlee.cn/2015/03/22/docker与精彩的shell/" data-id="cimh6hjkz0001w8w2juzzanrj" class="article-share-link" data-share="baidu" data-title="docker与精彩的shell">分享到</a>
       
 
       
@@ -315,7 +315,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://jamlee.cn/2015/03/04/PHP扩展开发之路-二/" data-id="cilengvn60005tyw20xadio8t" class="article-share-link" data-share="baidu" data-title="PHP扩展开发之路(二)">Share</a>
+        <a data-url="http://jamlee.cn/2015/03/04/PHP扩展开发之路-二/" data-id="cimh6hjm10008w8w243s7wpzb" class="article-share-link" data-share="baidu" data-title="PHP扩展开发之路(二)">分享到</a>
       
 
       
@@ -371,7 +371,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://jamlee.cn/2015/02/24/php扩展开发之路-一/" data-id="cilengvnh000dtyw213d0z1br" class="article-share-link" data-share="baidu" data-title="php扩展开发之路(一)">Share</a>
+        <a data-url="http://jamlee.cn/2015/02/24/php扩展开发之路-一/" data-id="cimh6hjm4000bw8w2iqe1k8q7" class="article-share-link" data-share="baidu" data-title="php扩展开发之路(一)">分享到</a>
       
 
       
@@ -418,7 +418,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://jamlee.cn/2015/02/22/32bit下gogs的编译安装/" data-id="cilengvn30004tyw2z9loxbyb" class="article-share-link" data-share="baidu" data-title="32bit下gogs的编译安装">Share</a>
+        <a data-url="http://jamlee.cn/2015/02/22/32bit下gogs的编译安装/" data-id="cimh6hjkt0000w8w2ntqdi6y4" class="article-share-link" data-share="baidu" data-title="32bit下gogs的编译安装">分享到</a>
       
 
       
@@ -466,7 +466,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://jamlee.cn/2015/02/05/2014年终总结/" data-id="cilengvms0000tyw23li4zetw" class="article-share-link" data-share="baidu" data-title="2014年终总结">Share</a>
+        <a data-url="http://jamlee.cn/2015/02/05/2014年终总结/" data-id="cimh6hjm20009w8w20eatucmv" class="article-share-link" data-share="baidu" data-title="2014年终总结">分享到</a>
       
 
       
@@ -490,7 +490,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
+    <h3 class="widget-title">標簽</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/">go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-docker/">php docker</a><span class="tag-list-count">1</span></li></ul>
     </div>
@@ -499,7 +499,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
+    <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
       <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/life/" style="font-size: 10px;">life</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-docker/" style="font-size: 10px;">php docker</a>
     </div>
@@ -508,7 +508,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">歸檔</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">3</span></li></ul>
     </div>
@@ -517,7 +517,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
         
@@ -572,7 +572,7 @@
 </nav>
   <!-- totop start -->
 <div id="totop">
-<a title="totop"><img src="/img/scrollup.png"/></a>
+<a title="返回頂部"><img src="/img/scrollup.png"/></a>
 </div>
 
 <!-- totop end -->

@@ -6,22 +6,22 @@
   
   <title>yield 编写web服务程序 | JamLee&#39;s Code Style</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="php在php5.5的时候引入了generator和coroutine,从核心上提出了一种方法去写不阻塞的IO,当然这和node的event loop还是有比较大的区别的,它的主要理念是：把几个大任务分别分成多个小步轮流执行，有某个小任务在等待系统io的话，就跳过它，执行下一个小任务，这样总体提升了代码的效率
+  <meta name="description" content="php在php5.5的时候引入了generator和coroutine,当然这和node的event loop还是有比较大的区别的。 yield 表达式 和php封装过系统底层的函数(select函数)可以一起写出非阻塞的io。
 
-0x1: yield表达式是什么？非常简单，描述yield表达式的只有两个关键词:">
+0x1: yield表达式是什么？非常简单，描述yield表达式的只有两个关键词: 中断点 和 占位符（自己总结的两点，只属于一种感性的记忆方式，并不是官方给出的专业">
 <meta property="og:type" content="article">
 <meta property="og:title" content="yield 编写web服务程序">
 <meta property="og:url" content="http://jamlee.cn/2015/10/05/yeild-编写web服务程序/index.html">
 <meta property="og:site_name" content="JamLee's Code Style">
-<meta property="og:description" content="php在php5.5的时候引入了generator和coroutine,从核心上提出了一种方法去写不阻塞的IO,当然这和node的event loop还是有比较大的区别的,它的主要理念是：把几个大任务分别分成多个小步轮流执行，有某个小任务在等待系统io的话，就跳过它，执行下一个小任务，这样总体提升了代码的效率
+<meta property="og:description" content="php在php5.5的时候引入了generator和coroutine,当然这和node的event loop还是有比较大的区别的。 yield 表达式 和php封装过系统底层的函数(select函数)可以一起写出非阻塞的io。
 
-0x1: yield表达式是什么？非常简单，描述yield表达式的只有两个关键词:">
-<meta property="og:updated_time" content="2016-03-05T04:45:43.000Z">
+0x1: yield表达式是什么？非常简单，描述yield表达式的只有两个关键词: 中断点 和 占位符（自己总结的两点，只属于一种感性的记忆方式，并不是官方给出的专业">
+<meta property="og:updated_time" content="2016-04-01T03:27:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="yield 编写web服务程序">
-<meta name="twitter:description" content="php在php5.5的时候引入了generator和coroutine,从核心上提出了一种方法去写不阻塞的IO,当然这和node的event loop还是有比较大的区别的,它的主要理念是：把几个大任务分别分成多个小步轮流执行，有某个小任务在等待系统io的话，就跳过它，执行下一个小任务，这样总体提升了代码的效率
+<meta name="twitter:description" content="php在php5.5的时候引入了generator和coroutine,当然这和node的event loop还是有比较大的区别的。 yield 表达式 和php封装过系统底层的函数(select函数)可以一起写出非阻塞的io。
 
-0x1: yield表达式是什么？非常简单，描述yield表达式的只有两个关键词:">
+0x1: yield表达式是什么？非常简单，描述yield表达式的只有两个关键词: 中断点 和 占位符（自己总结的两点，只属于一种感性的记忆方式，并不是官方给出的专业">
 <meta name="twitter:creator" content="@webboy89860">
   
     <link rel="alternative" href="/atom.xml" title="JamLee&#39;s Code Style" type="application/atom+xml">
@@ -104,16 +104,16 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>php在php5.5的时候引入了generator和coroutine,从核心上提出了一种方法去写不阻塞的IO,当然这和node的event loop还是有比较大的区别的,它的主要理念是：<em>把几个大任务分别分成多个小步轮流执行，有某个小任务在等待系统io的话，就跳过它，执行下一个小任务，这样总体提升了代码的效率</em></p>
+<p>php在php5.5的时候引入了generator和coroutine,当然这和node的event loop还是有比较大的区别的。 yield 表达式 和php封装过系统底层的函数(select函数)可以一起写出非阻塞的io。</p>
 </blockquote>
 <h2 id="0x1-yield表达式是什么？"><a href="#0x1-yield表达式是什么？" class="headerlink" title="0x1: yield表达式是什么？"></a>0x1: yield表达式是什么？</h2><p>非常简单，描述yield表达式的只有两个关键词: 中断点 和 占位符（自己总结的两点，只属于一种感性的记忆方式，并不是官方给出的专业词汇）。<br>举个简单的例子：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gen</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    $tid = (<span class="keyword">yield</span> <span class="number">1</span> + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">1</span>; $i &lt;= <span class="number">10</span>; ++$i) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"This is $tid task iteration $i.\n"</span>;</span><br><span class="line">        <span class="keyword">yield</span> $i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//$t1是[generator](http://php.net/manual/en/class.generator.php)类的实例(instance)</span></span><br><span class="line">$t1 = gen();</span><br><span class="line"><span class="comment">//取出yield后面的表达式的结构，并没有进行赋值就暂停了当前的操作 `$tid = (yield 1 + 1) `，（特性一：中断点)</span></span><br><span class="line">$r1 = $t1-&gt;current();</span><br><span class="line"><span class="comment">//结果为 2</span></span><br><span class="line"><span class="keyword">echo</span> $r1;</span><br><span class="line"><span class="comment">//将字符'+++'（特性二：占位符)，替换到刚才暂停的地方 `$tid = '+++++'`，并进入for循环，遇见yield表达式，获取yield 表达式后面的值，并保存当前的局部变量的值，yield后面是$i，返回$i</span></span><br><span class="line">var_dump($t1-&gt;send(<span class="string">'+++'</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">//$t1是[generator](http://php.net/manual/en/class.generator.php)类的实例(instance)</span></span><br><span class="line">$t1 = gen();</span><br><span class="line"><span class="comment">//取出yield后面的表达式的结构，并没有进行赋值就暂停了当前的操作 `$tid = (yield 1 + 1) `，（特性一：中断点)</span></span><br><span class="line">$r1 = $t1-&gt;current();</span><br><span class="line"><span class="comment">//结果为 2</span></span><br><span class="line"><span class="keyword">echo</span> $r1;</span><br><span class="line"><span class="comment">//将字符'+++'（特性二：占位符)，替换到刚才暂停的地方 `$tid = '+++++'`，并进入for循环，遇见yield表达式，获取yield 表达式后面的值，并保存当前的局部变量的值，yield后面是$i，返回$i</span></span><br><span class="line">var_dump($t1-&gt;send(<span class="string">'+++'</span>));</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gen</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    $tid = (<span class="keyword">yield</span> <span class="number">1</span> + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">1</span>; $i &lt;= <span class="number">10</span>; ++$i) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"This is $tid task iteration $i.\n"</span>;</span><br><span class="line">        <span class="keyword">yield</span> $i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//$t1是[generator](http://php.net/manual/en/class.generator.php)类的实例(instance)</span></span><br><span class="line">$t1 = gen();</span><br><span class="line"><span class="comment">//取出yield后面的表达式的结构，并没有进行赋值就暂停了当前的操作 `$tid = (yield 1 + 1) `，（特性一：中断点)</span></span><br><span class="line">$r1 = $t1-&gt;current();</span><br><span class="line"><span class="comment">//结果为 2</span></span><br><span class="line"><span class="keyword">echo</span> $r1;</span><br><span class="line"><span class="comment">//将字符'+++'（特性二：占位符)，替换到刚才暂停的地方 `$tid = '+++++'`，并进入for循环，遇见yield表达式，获取yield 表达式后面的值，并保存当前的局部变量的值，yield后面是$i，返回$i</span></span><br><span class="line">var_dump($t1-&gt;send(<span class="string">'+++'</span>));</span><br></pre></td></tr></table></figure>
 <p>这里 <code>current</code>方法是暂停并返回获取当前<code>yield</code>表达式的值。send方法是先替换之前暂停时的<code>yield表达式</code>所处的位置的值，再开始执行，直到遇到下一个yield表达式，再取表达式的结果，暂停并保存当前的局部变量的值。在这里我注意到send方法总是同时得确定两个yield表达式的位置，第一个yield表达式的值被替换，再去寻找第二个表达式的值（yield <code>$i</code>里面的<code>$i</code>），再次保存当前的状态，返回 yield表达式 后面的值。依次类推。<br>这里有个需要思考的问题就是如果一开始就用send方法不用current()会怎么样？ 答案是send方法在第一次运行之前会隐含调用rewind方法，会在函数第一个yield的地方中断保存局部变量，但是忽略它的返回值。</p>
 <a id="more"></a>
 <h2 id="0x2-coroutine是什么？"><a href="#0x2-coroutine是什么？" class="headerlink" title="0x2: coroutine是什么？"></a>0x2: coroutine是什么？</h2><blockquote>
 <p>Coroutines are computer program components that generalize subroutines for nonpreemptive multitasking, by allowing multiple entry points for suspending and resuming execution at certain locations.</p>
 </blockquote>
-<p>简单的说:coroutine（协同程序） 提供一种方法中断当前执行，保存当前的局部变量，下次再过来又可以恢复当前局部变量继续执行。在php里就是几个大的任务分别分成小的任务，轮流执行。而中断和恢复就是靠的yield表达式来实现。</p>
+<p>简单的说:coroutine（协同程序） 提供一种方法中断当前执行，保存当前的局部变量，下次再过来又可以恢复当前局部变量继续执行。在php里就是一个大的任务分别分成小的任务，轮流执行。而中断和恢复就是靠的yield表达式来实现。</p>
 <h2 id="0x3-使用yield表达式-实现非阻塞IO的例子"><a href="#0x3-使用yield表达式-实现非阻塞IO的例子" class="headerlink" title="0x3: 使用yield表达式 实现非阻塞IO的例子"></a>0x3: 使用yield表达式 实现非阻塞IO的例子</h2><p>在这里主要有三个参与对象共同去实现任务调度：Task, Scheduler, SystemCall.</p>
 <ol>
 <li><code>Task</code> 对象以<code>Generator</code>对象为参数初始化，一个Task 分成了多个小步执行。</li>
@@ -134,7 +134,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://jamlee.cn/2015/10/05/yeild-编写web服务程序/" data-id="cilengvnc000atyw23iy5sgrt" class="article-share-link" data-share="baidu" data-title="yield 编写web服务程序">Share</a>
+        <a data-url="http://jamlee.cn/2015/10/05/yeild-编写web服务程序/" data-id="cimh6hjmd000ew8w2nk0jl3xf" class="article-share-link" data-share="baidu" data-title="yield 编写web服务程序">分享到</a>
       
 
       
@@ -150,7 +150,7 @@
   
   
     <a href="/2015/06/24/docker快速搭建易于分享和更新的composer缓存库/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">上一篇</strong>
       <div class="article-nav-title">docker快速搭建易于分享和更新的composer缓存库</div>
     </a>
   
@@ -167,7 +167,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
+    <h3 class="widget-title">標簽</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/">go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-docker/">php docker</a><span class="tag-list-count">1</span></li></ul>
     </div>
@@ -176,7 +176,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
+    <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
       <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/life/" style="font-size: 10px;">life</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-docker/" style="font-size: 10px;">php docker</a>
     </div>
@@ -185,7 +185,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">歸檔</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">3</span></li></ul>
     </div>
@@ -194,7 +194,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
         
@@ -249,7 +249,7 @@
 </nav>
   <!-- totop start -->
 <div id="totop">
-<a title="totop"><img src="/img/scrollup.png"/></a>
+<a title="返回頂部"><img src="/img/scrollup.png"/></a>
 </div>
 
 <!-- totop end -->

@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>JamLee&#39;s Code Style</title>
+  <subtitle>Never Give Up</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://jamlee.cn/"/>
+  <updated>2016-04-01T03:27:56.000Z</updated>
+  <id>http://jamlee.cn/</id>
+  
+  <author>
+    <name>JamLee</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>yield 编写web服务程序</title>
+    <link href="http://jamlee.cn/2015/10/05/yeild-%E7%BC%96%E5%86%99web%E6%9C%8D%E5%8A%A1%E7%A8%8B%E5%BA%8F/"/>
+    <id>http://jamlee.cn/2015/10/05/yeild-编写web服务程序/</id>
+    <published>2015-10-05T03:37:38.000Z</published>
+    <updated>2016-04-01T03:27:56.000Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;php在php5.5的时候引入了generator和coroutine,当然这和node的event loop还是有比较大的区别的。 yield 表达式 和php封装过系统底层的函数(select函数)可以一起写出非阻塞的io。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;0x1-yield表达式是什么？&quot;&gt;&lt;a href=&quot;#0x1-yield表达式是什么？&quot; class=&quot;headerlink&quot; title=&quot;0x1: yield表达式是什么？&quot;&gt;&lt;/a&gt;0x1: yield表达式是什么？&lt;/h2&gt;&lt;p&gt;非常简单，描述yield表达式的只有两个关键词: 中断点 和 占位符（自己总结的两点，只属于一种感性的记忆方式，并不是官方给出的专业词汇）。&lt;br&gt;举个简单的例子：&lt;/p&gt;
+&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;gen&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    $tid = (&lt;span class=&quot;keyword&quot;&gt;yield&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; + &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; ($i = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;; $i &amp;lt;= &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;; ++$i) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;This is $tid task iteration $i.\n&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;yield&lt;/span&gt; $i;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//$t1是[generator](http://php.net/manual/en/class.generator.php)类的实例(instance)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$t1 = gen();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//取出yield后面的表达式的结构，并没有进行赋值就暂停了当前的操作 `$tid = (yield 1 + 1) `，（特性一：中断点)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$r1 = $t1-&amp;gt;current();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//结果为 2&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;echo&lt;/span&gt; $r1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//将字符&#39;+++&#39;（特性二：占位符)，替换到刚才暂停的地方 `$tid = &#39;+++++&#39;`，并进入for循环，遇见yield表达式，获取yield 表达式后面的值，并保存当前的局部变量的值，yield后面是$i，返回$i&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;var_dump($t1-&amp;gt;send(&lt;span class=&quot;string&quot;&gt;&#39;+++&#39;&lt;/span&gt;));&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;这里 &lt;code&gt;current&lt;/code&gt;方法是暂停并返回获取当前&lt;code&gt;yield&lt;/code&gt;表达式的值。send方法是先替换之前暂停时的&lt;code&gt;yield表达式&lt;/code&gt;所处的位置的值，再开始执行，直到遇到下一个yield表达式，再取表达式的结果，暂停并保存当前的局部变量的值。在这里我注意到send方法总是同时得确定两个yield表达式的位置，第一个yield表达式的值被替换，再去寻找第二个表达式的值（yield &lt;code&gt;$i&lt;/code&gt;里面的&lt;code&gt;$i&lt;/code&gt;），再次保存当前的状态，返回 yield表达式 后面的值。依次类推。&lt;br&gt;这里有个需要思考的问题就是如果一开始就用send方法不用current()会怎么样？ 答案是send方法在第一次运行之前会隐含调用rewind方法，会在函数第一个yield的地方中断保存局部变量，但是忽略它的返回值。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h2 id=&quot;0x2-coroutine是什么？&quot;&gt;&lt;a href=&quot;#0x2-coroutine是什么？&quot; class=&quot;headerlink&quot; title=&quot;0x2: coroutine是什么？&quot;&gt;&lt;/a&gt;0x2: coroutine是什么？&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;Coroutines are computer program components that generalize subroutines for nonpreemptive multitasking, by allowing multiple entry points for suspending and resuming execution at certain locations.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;简单的说:coroutine（协同程序） 提供一种方法中断当前执行，保存当前的局部变量，下次再过来又可以恢复当前局部变量继续执行。在php里就是一个大的任务分别分成小的任务，轮流执行。而中断和恢复就是靠的yield表达式来实现。&lt;/p&gt;
+&lt;h2 id=&quot;0x3-使用yield表达式-实现非阻塞IO的例子&quot;&gt;&lt;a href=&quot;#0x3-使用yield表达式-实现非阻塞IO的例子&quot; class=&quot;headerlink&quot; title=&quot;0x3: 使用yield表达式 实现非阻塞IO的例子&quot;&gt;&lt;/a&gt;0x3: 使用yield表达式 实现非阻塞IO的例子&lt;/h2&gt;&lt;p&gt;在这里主要有三个参与对象共同去实现任务调度：Task, Scheduler, SystemCall.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;Task&lt;/code&gt; 对象以&lt;code&gt;Generator&lt;/code&gt;对象为参数初始化，一个Task 分成了多个小步执行。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Scheduler&lt;/code&gt; 对象负责调度任务，什么叫做调度呢？就是分别轮流执行多个Task对象的每一步，如果某一步还在等待IO就跳过去这一步。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SystemCall&lt;/code&gt;是Task的一个小步，假设Task A 对象的多个小步为 ‘— — + — —‘, 执行到+这一步就执行&lt;code&gt;SystemCall&lt;/code&gt;的任务。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;还有一些额外的对象去给任务调度添加功能：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;CoroutineReturnValue&lt;/code&gt; 把数值类型封装成类，用在处理coroutine之间的嵌套。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;CoSocket&lt;/code&gt; 封装了socket的系列操作。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Log&lt;/code&gt; 输出日志到cli。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;具体怎么实现，还是源码来的实在，仓库地址 &lt;a href=&quot;https://github.com/Jamlee/coroutine&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/Jamlee/coroutine&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;参考文档：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://nikic.github.io/2012/12/22/Cooperative-multitasking-using-coroutines-in-PHP.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://nikic.github.io/2012/12/22/Cooperative-multitasking-using-coroutines-in-PHP.html&lt;/a&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;php在php5.5的时候引入了generator和coroutine,当然这和node的event loop还是有比较大的区别的。 yield 表达式 和php封装过系统底层的函数(select函数)可以一起写出非阻塞的io。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;0x1-yield表达式是什么？&quot;&gt;&lt;a href=&quot;#0x1-yield表达式是什么？&quot; class=&quot;headerlink&quot; title=&quot;0x1: yield表达式是什么？&quot;&gt;&lt;/a&gt;0x1: yield表达式是什么？&lt;/h2&gt;&lt;p&gt;非常简单，描述yield表达式的只有两个关键词: 中断点 和 占位符（自己总结的两点，只属于一种感性的记忆方式，并不是官方给出的专业词汇）。&lt;br&gt;举个简单的例子：&lt;/p&gt;
+&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;gen&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    $tid = (&lt;span class=&quot;keyword&quot;&gt;yield&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; + &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; ($i = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;; $i &amp;lt;= &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;; ++$i) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;This is $tid task iteration $i.\n&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;yield&lt;/span&gt; $i;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//$t1是[generator](http://php.net/manual/en/class.generator.php)类的实例(instance)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$t1 = gen();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//取出yield后面的表达式的结构，并没有进行赋值就暂停了当前的操作 `$tid = (yield 1 + 1) `，（特性一：中断点)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$r1 = $t1-&amp;gt;current();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//结果为 2&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;echo&lt;/span&gt; $r1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//将字符&#39;+++&#39;（特性二：占位符)，替换到刚才暂停的地方 `$tid = &#39;+++++&#39;`，并进入for循环，遇见yield表达式，获取yield 表达式后面的值，并保存当前的局部变量的值，yield后面是$i，返回$i&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;var_dump($t1-&amp;gt;send(&lt;span class=&quot;string&quot;&gt;&#39;+++&#39;&lt;/span&gt;));&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;这里 &lt;code&gt;current&lt;/code&gt;方法是暂停并返回获取当前&lt;code&gt;yield&lt;/code&gt;表达式的值。send方法是先替换之前暂停时的&lt;code&gt;yield表达式&lt;/code&gt;所处的位置的值，再开始执行，直到遇到下一个yield表达式，再取表达式的结果，暂停并保存当前的局部变量的值。在这里我注意到send方法总是同时得确定两个yield表达式的位置，第一个yield表达式的值被替换，再去寻找第二个表达式的值（yield &lt;code&gt;$i&lt;/code&gt;里面的&lt;code&gt;$i&lt;/code&gt;），再次保存当前的状态，返回 yield表达式 后面的值。依次类推。&lt;br&gt;这里有个需要思考的问题就是如果一开始就用send方法不用current()会怎么样？ 答案是send方法在第一次运行之前会隐含调用rewind方法，会在函数第一个yield的地方中断保存局部变量，但是忽略它的返回值。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="php" scheme="http://jamlee.cn/tags/php/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>docker快速搭建易于分享和更新的composer缓存库</title>
+    <link href="http://jamlee.cn/2015/06/24/docker%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E6%98%93%E4%BA%8E%E5%88%86%E4%BA%AB%E5%92%8C%E6%9B%B4%E6%96%B0%E7%9A%84composer%E7%BC%93%E5%AD%98%E5%BA%93/"/>
+    <id>http://jamlee.cn/2015/06/24/docker快速搭建易于分享和更新的composer缓存库/</id>
+    <published>2015-06-24T04:46:50.000Z</published>
+    <updated>2016-03-05T03:19:55.000Z</updated>
+    
+    <content type="html">&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;前言：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;前言：目前没有一个稳定的composer服务实在是太坑，特别是想涉及自动化测试的时候，安装依赖就成了一个大大的问题，总之坑爹啊。&lt;/p&gt;
+&lt;p&gt;项目：&lt;br&gt;&lt;a href=&quot;https://github.com/Jamlee/docker-toran-proxy&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/Jamlee/docker-toran-proxy&lt;/a&gt;&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;利用的是：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;toran-proxy&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;准备工具：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;docker&lt;br&gt;docker-compose&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;p&gt;优点：&lt;/p&gt;
+&lt;p&gt;1.缓存好的库文件都在一个文件夹里，可以打包回家，再把docker的壳子启动起来就可以使用了，或者分享给其他人，据我统计全量的镜像目前有60g。公司缓存下来简直小case。&lt;/p&gt;
+&lt;p&gt;2.稳定性较国内的镜像要高的多，出来问题也可以自己调试解决。（composer install -vvv 可以看到很多）&lt;/p&gt;
+&lt;p&gt;3.易于更新toran-proxy的版本，只要解压替换./service/toran的程序文件即可。docker只是一个运行环境的壳子而已。&lt;/p&gt;
+&lt;p&gt;分三步搭建起来：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;0x1:看效果&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/Jamlee/docker-toran-proxy/master/asset/install.gif&quot; alt=&quot;img&quot;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;0x2:配置&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;更改 ip 和 port&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;modify file: ./service/toran/app/config/parameters.yml #changing ip&lt;br&gt;modify file: ./service/toran-proxy-http.conf #changing port&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;注意:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;我的默认配置是 192.168.1.12:8002,把他换成你自己的.&lt;br&gt;还有一种方式是在初始化脚本里面更改，脚本的路径是： ./service/toran-proxy&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;0x3:启动&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;运行：&lt;br&gt;&lt;code&gt;docker-compose up&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;然后 打开&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;192.168.1.12:8002&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https://dn-phphub.qbox.me/uploads/images/201506/28/734/gdOj1rYHjd.png&quot; alt=&quot;img&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;优化git设置&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/Jamlee/docker-toran-proxy/master/asset/config.png&quot; alt=&quot;img&quot;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;路径 /data/toran-proxy/mirrors 是容器内部的, git clone url jamlee@192.168.1.12:/home/jamlee/JAM/lab/toran/data/mirrors/ 是主机上的.所以每一个能够访问到主机的电脑都可以使用该库。&lt;/p&gt;
+&lt;/blockquote&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;前言：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;前言：目前没有一个稳定的composer服务实在是太坑，特别是想涉及自动化测试的时候，安装依赖就成了一个大大的问题，总之坑爹啊。&lt;/p&gt;
+&lt;p&gt;项目：&lt;br&gt;&lt;a href=&quot;https://github.com/Jamlee/docker-toran-proxy&quot;&gt;https://github.com/Jamlee/docker-toran-proxy&lt;/a&gt;&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="php docker" scheme="http://jamlee.cn/tags/php-docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>docker特权模式的影响</title>
+    <link href="http://jamlee.cn/2015/04/12/docker%E7%89%B9%E6%9D%83%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%BD%B1%E5%93%8D/"/>
+    <id>http://jamlee.cn/2015/04/12/docker特权模式的影响/</id>
+    <published>2015-04-12T06:45:21.000Z</published>
+    <updated>2016-03-05T03:19:55.000Z</updated>
+    
+    <content type="html">&lt;p&gt;起因&lt;/p&gt;
+&lt;p&gt;本来我想在docker里面做些测试和监控，于是我用到了两个工具tcpdump和strace。想要使用strace就必须开启特权模式，但是我发现开启之后tcpdump就无法使用了。&lt;/p&gt;
+&lt;p&gt;解释&lt;/p&gt;
+&lt;p&gt;是因为有个叫做&lt;em&gt;apparmor&lt;/em&gt;这个程序导致的。它是控制访问权限的一种系统类似于selinux。但是没有它docker就无法启动容器。我的ubuntu主机安装了tcpdump，容器也安装了tcpdump，当我开启容器里面的tcpdump的时候，会提示没有权限打开共享库。因为&lt;em&gt;apparmor（/etc/apparmor.d/docker）&lt;/em&gt;在特权模式下，容器是没有加载&lt;em&gt;/etc/apparmor.d/docker&lt;/em&gt;文件的，所以导致了一些比较混乱的问题（具体是为什么我也没找到答案），目前还没有被解决。所以想要搞定这个问题一个比较好的办法是把容器里面的tcpdump的路径换下。例如(Dockerfile)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;RUN mv /usr/sbin/tcpdump /usr/local/bin  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参考资料:&lt;br&gt;&lt;a href=&quot;https://github.com/docker/docker/issues/5490&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/docker/docker/issues/5490&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://stackoverflow.com/questions/25533666/cannot-reload-or-start-apparmor-in-docker&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://stackoverflow.com/questions/25533666/cannot-reload-or-start-apparmor-in-docker&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://github.com/docker/docker/issues/5788&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/docker/docker/issues/5788&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://github.com/docker/docker/issues/7276#issuecomment-50436671&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/docker/docker/issues/7276#issuecomment-50436671&lt;/a&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;起因&lt;/p&gt;
+&lt;p&gt;本来我想在docker里面做些测试和监控，于是我用到了两个工具tcpdump和strace。想要使用strace就必须开启特权模式，但是我发现开启之后tcpdump就无法使用了。&lt;/p&gt;
+&lt;p&gt;解释&lt;/p&gt;
+&lt;p&gt;是因为有个叫做&lt;em&gt;apparmor&lt;
+    
+    </summary>
+    
+    
+      <category term="docker" scheme="http://jamlee.cn/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>docker与精彩的shell</title>
+    <link href="http://jamlee.cn/2015/03/22/docker%E4%B8%8E%E7%B2%BE%E5%BD%A9%E7%9A%84shell/"/>
+    <id>http://jamlee.cn/2015/03/22/docker与精彩的shell/</id>
+    <published>2015-03-22T04:30:18.000Z</published>
+    <updated>2016-03-05T04:43:10.000Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;0x1-删除所有标签为none的镜像&quot;&gt;&lt;a href=&quot;#0x1-删除所有标签为none的镜像&quot; class=&quot;headerlink&quot; title=&quot;0x1:删除所有标签为none的镜像&quot;&gt;&lt;/a&gt;0x1:删除所有标签为none的镜像&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; i &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; `sudo docker images|grep \&amp;lt;none\&amp;gt;|awk &lt;span class=&quot;string&quot;&gt;&#39;&amp;#123;print $3&amp;#125;&#39;&lt;/span&gt;`;&lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt; sudo docker rmi &lt;span class=&quot;variable&quot;&gt;$i&lt;/span&gt;;&lt;span class=&quot;keyword&quot;&gt;done&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;或者&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;docker images|grep \&amp;lt;none\&amp;gt;|awk &lt;span class=&quot;string&quot;&gt;&#39;&amp;#123;print $3&amp;#125;&#39;&lt;/span&gt; | xargs docker rmi&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+ &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h3 id=&quot;0x2-Dockerfile换源的简单方法&quot;&gt;&lt;a href=&quot;#0x2-Dockerfile换源的简单方法&quot; class=&quot;headerlink&quot; title=&quot;0x2:Dockerfile换源的简单方法&quot;&gt;&lt;/a&gt;0x2:Dockerfile换源的简单方法&lt;/h3&gt;&lt;p&gt;Ubuntu添加：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;RUN sed -i &amp;apos;s/http:\/\/archive\.ubuntu\.com\/ubuntu\//http:\/\/mirrors\.163\.com\/ubuntu\//g&amp;apos; /etc/apt/sources.list
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;待续。。。。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;0x1-删除所有标签为none的镜像&quot;&gt;&lt;a href=&quot;#0x1-删除所有标签为none的镜像&quot; class=&quot;headerlink&quot; title=&quot;0x1:删除所有标签为none的镜像&quot;&gt;&lt;/a&gt;0x1:删除所有标签为none的镜像&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; i &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; `sudo docker images|grep \&amp;lt;none\&amp;gt;|awk &lt;span class=&quot;string&quot;&gt;&#39;&amp;#123;print $3&amp;#125;&#39;&lt;/span&gt;`;&lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt; sudo docker rmi &lt;span class=&quot;variable&quot;&gt;$i&lt;/span&gt;;&lt;span class=&quot;keyword&quot;&gt;done&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;或者&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;docker images|grep \&amp;lt;none\&amp;gt;|awk &lt;span class=&quot;string&quot;&gt;&#39;&amp;#123;print $3&amp;#125;&#39;&lt;/span&gt; | xargs docker rmi&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="docker" scheme="http://jamlee.cn/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>PHP扩展开发之路(二)</title>
+    <link href="http://jamlee.cn/2015/03/04/PHP%E6%89%A9%E5%B1%95%E5%BC%80%E5%8F%91%E4%B9%8B%E8%B7%AF-%E4%BA%8C/"/>
+    <id>http://jamlee.cn/2015/03/04/PHP扩展开发之路-二/</id>
+    <published>2015-03-03T18:08:28.000Z</published>
+    <updated>2016-03-05T03:19:55.000Z</updated>
+    
+    <content type="html">&lt;p&gt;##0x2 hello world！，你的第一个php扩展##&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;阅读前必看小贴士：&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;如果你不想在本教程上拷贝代码，你可以clone下这个仓库&lt;a href=&quot;https://github.com/kchodorow/rlyeh&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;github&lt;/a&gt;，每一小节的代码对应着每一小节的分支，当阅读到该小节的时候，你可以切换到该小节的代码分支。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git clone git://github.com/kchodorow/rlyeh.git
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;比如当前小节的代码分支名是oop，你可以这样&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git checkout -b oop origin/oop
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;本章的代码的分支是master，你可以直接&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git clone git://github.com/kchodorow/rlyeh.git
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;而不用切换分支。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;hr&gt;
+&lt;p&gt;##正文开始##&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;我们可以在任何地方创建一个文件夹rlyeh&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ mkdir rlyeh
+$ cd rlyeh
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;一个php扩展至少由下面的3个文件组成&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;“config.m4”, which contains compilation instructions for PHP&lt;/li&gt;
+&lt;li&gt;“php_extname.c”: source code&lt;/li&gt;
+&lt;li&gt;“php_extname.h”: a header file&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;首先创建&lt;em&gt;config.m4&lt;/em&gt;文件，不过这个真的很无聊，里面的内容差不多都是规定的，你知道有这个就可以了，我建议最好是在代码仓库里拷贝这些代码&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;pre&gt;&lt;code&gt;dnl lines starting with &amp;quot;dnl&amp;quot; are comments
+
+PHP_ARG_ENABLE(rlyeh, whether to enable Rlyeh extension, [  --enable-rlyeh   Enable Rlyeh extension])
+
+if test &amp;quot;$PHP_RLYEH&amp;quot; != &amp;quot;no&amp;quot;; then
+
+  dnl this defines the extension
+  PHP_NEW_EXTENSION(rlyeh, php_rlyeh.c, $ext_shared)
+
+  dnl this is boilerplate to make the extension work on OS X
+  case $build_os in
+  darwin1*.*.*)
+    AC_MSG_CHECKING([whether to compile for recent osx architectures])
+    CFLAGS=&amp;quot;$CFLAGS -arch i386 -arch x86_64 -mmacosx-version-min=10.5&amp;quot;
+    AC_MSG_RESULT([yes])
+    ;;
+  darwin*)
+    AC_MSG_CHECKING([whether to compile for every osx architecture ever])
+    CFLAGS=&amp;quot;$CFLAGS -arch i386 -arch x86_64 -arch ppc -arch ppc64&amp;quot;
+    AC_MSG_RESULT([yes])
+    ;;
+  esac
+fi
+&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;再创建 &lt;em&gt;php_rlyeh.c&lt;/em&gt; 文件&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// include PHP API
+#include &amp;lt;php.h&amp;gt;
+
+// header file we&amp;apos;ll create below
+#include &amp;quot;php_rlyeh.h&amp;quot;
+
+// define the function(s) we want to add
+zend_function_entry rlyeh_functions[] = {
+  PHP_FE(cthulhu, NULL)
+  { NULL, NULL, NULL }
+};
+
+// &amp;quot;rlyeh_functions&amp;quot; refers to the struct defined above
+// we&amp;apos;ll be filling in more of this later: you can use this to specify
+// globals, php.ini info, startup and teardown functions, etc.
+zend_module_entry rlyeh_module_entry = {
+  STANDARD_MODULE_HEADER,
+  PHP_RLYEH_EXTNAME,
+  rlyeh_functions,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  PHP_RLYEH_VERSION,
+  STANDARD_MODULE_PROPERTIES
+};
+
+// install module
+ZEND_GET_MODULE(rlyeh)
+
+// actual non-template code!
+PHP_FUNCTION(cthulhu) {
+// php_printf is PHP&amp;apos;s version of printf, it&amp;apos;s essentially &amp;quot;echo&amp;quot; from C
+php_printf(&amp;quot;In his house at R&amp;apos;lyeh dead Cthulhu waits dreaming.\n&amp;quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上面的这个文件完全是一个模板式的文件，但是这个对我们是很重要的。但是你不知道不要紧，就像刚学java的时候，你不知道&lt;em&gt;public static void main&lt;/em&gt;是什么意思一样。等后面我们再婉婉道来。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;最后创建&lt;em&gt;php_rlyeh.h&lt;/em&gt;文件，&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#define PHP_RLYEH_EXTNAME &amp;quot;rlyeh&amp;quot;
+#define PHP_RLYEH_VERSION &amp;quot;0.01&amp;quot;
+
+PHP_FUNCTION(cthulhu);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;你可以修改版本号，随你怎么写，使用&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ php --ri rlyeh
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以查看扩展模块的信息。（当然前提是这个模块已经安装）&lt;/p&gt;
+&lt;p&gt;到现在所有的准备工作都做完了哈。要开始编译安装php的扩展了：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ echo $PATH
+$PHPDIR/install-debug-zts/bin:/usr/local/bin:/usr/bin
+$ phpize
+Configuring for:
+PHP Api Version: 20090626
+Zend Module Api No:  20090626
+Zend Extension Api No:   220090626
+$
+$ ./configure
+# lots of checks...
+$
+$ make
+# compile...
+
+Build complete.
+Don&amp;apos;t forget to run &amp;apos;make test&amp;apos;.
+
+$ make install
+$
+Installing shared extensions: $PHPDIR/install-debug-zts/lib/php/extensions/debug-zts-20090626/
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;现在把扩展添加进php.ini文件中，一般来说php.ini的位置在(&lt;em&gt;$PHPDIR/install-debug-zts/lib/php.ini&lt;/em&gt;），如果没有这个文件可以从php的源码的根目录拷贝一个过去。&lt;br&gt;添加这行：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;extension=rlyeh.so&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;现在你就可以使用你为php写的扩展函数，就和php的其他内置函数一样，不用导入文件拿起来就是用：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ php -r &amp;apos;cthulhu();&amp;apos;
+In his house at R&amp;apos;lyeh dead Cthulhu waits dreaming.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;恭喜你的一个扩展文件已经开始工作了。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;##0x2 hello world！，你的第一个php扩展##&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;阅读前必看小贴士：&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;如果你不想在本教程上拷贝代码，你可以clone下这个仓库&lt;a href=&quot;https://github.com/kchodorow/rlyeh&quot;&gt;github&lt;/a&gt;，每一小节的代码对应着每一小节的分支，当阅读到该小节的时候，你可以切换到该小节的代码分支。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git clone git://github.com/kchodorow/rlyeh.git
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;比如当前小节的代码分支名是oop，你可以这样&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git checkout -b oop origin/oop
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;本章的代码的分支是master，你可以直接&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git clone git://github.com/kchodorow/rlyeh.git
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;而不用切换分支。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="php" scheme="http://jamlee.cn/tags/php/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>php扩展开发之路(一)</title>
+    <link href="http://jamlee.cn/2015/02/24/php%E6%89%A9%E5%B1%95%E5%BC%80%E5%8F%91%E4%B9%8B%E8%B7%AF-%E4%B8%80/"/>
+    <id>http://jamlee.cn/2015/02/24/php扩展开发之路-一/</id>
+    <published>2015-02-24T04:46:50.000Z</published>
+    <updated>2016-03-05T03:19:55.000Z</updated>
+    
+    <content type="html">&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;前言：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在网上搜到了一个非常好的php扩展开发的资料，特翻译过来，并加上自己的见解，因为我跟着走过一遍,非常实用。&lt;br&gt;原文：&lt;a href=&quot;http://www.kchodorow.com/blog/2011/08/11/php-extensions-made-eldrich-installing-php/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.kchodorow.com/blog/2011/08/11/php-extensions-made-eldrich-installing-php/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;php扩展允许你在php中使用几乎所有的C/C++代码，这里有4个部分关于这个教程。&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;编译安装调试模式的PHP&lt;/li&gt;
+&lt;li&gt;hello world！，你的第一个php扩展&lt;/li&gt;
+&lt;li&gt;开始简单使用C API &lt;/li&gt;
+&lt;li&gt;使用C 创建php对象&lt;/li&gt;
+&lt;/ol&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;所有的关于本教程的代码例子都可以在&lt;a href=&quot;https://github.com/kchodorow/rlyeh&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;github&lt;/a&gt;上找到。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;##0x1 编译安装调试模式的PHP&lt;/p&gt;
+&lt;p&gt;　　在你开始开发扩展之前你需要编译php（为了你以后调试更方便），当然如果你很怕麻烦，你可以试着运行&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;which phpize
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果返回了phpize的路径，你只可以不用看下面的了，直接进入下一章。&lt;/p&gt;
+&lt;p&gt;　　编译php不是什么可怕的事（除非你是在windows下，在这个情况下那我必须欢迎你进入&lt;a href=&quot;https://wiki.php.net/internals/windows/stepbystepbuild&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;）.首先你需要下载你想要开发php的那个版本的源码，这里是&lt;a href=&quot;http://php.net/downloads.php#v5&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;源码l列表&lt;/a&gt;。 当然现在php5.3.* 已经不再维护了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;解压php源码：&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ tar jxvf php-5.3.6.tar.bz2
+$ cd php-5.3.6/
+$ PHPDIR=`pwd` # setting this up so I can refer to $PHPDIR later
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注：这个教程是基于php5.3.&lt;em&gt; 如果你用的不是php5.3.&lt;/em&gt; 可能api有一些改动。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;安装php，运行:&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ mkdir install-debug-zts # install dir
+$ ./configure --enable-debug --enable-maintainer-zts --prefix=$PHPDIR/install-debug-zts
+$ make install
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;我推荐使用自定义的安装路径前缀去安装($PHPDIR)，这样可以把你的php和已经安装过的php分开。如果你在默认的安装路径安装了多个php的版本，你将很快变得非常烦，因为你安装在同一个地方，当你需要重新安装的时候，老版本一些文件有的被新版本覆盖，有的被遗留在原来的位置。因此，我们需要有保证有结构组织的去安装php。&lt;/p&gt;
+&lt;p&gt;这里有一对配置为了开发扩展你应该打开:&lt;strong&gt;–enable-debug&lt;/strong&gt;（调试信息） 和 &lt;strong&gt;–enable-maintainer-zts&lt;/strong&gt;(线程相关的和内存追踪) &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;当mkae install 执行完了之后，你需要把安装的php添加进环境变量。&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ # this will only add it to the path for this shell
+$ PATH=$PHPDIR/install-debug-zts/bin:$PATH
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;前言：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在网上搜到了一个非常好的php扩展开发的资料，特翻译过来，并加上自己的见解，因为我跟着走过一遍,非常实用。&lt;br&gt;原文：&lt;a href=&quot;http://www.kchodorow.com/blog/2011/08/11/php-extensions-made-eldrich-installing-php/&quot;&gt;http://www.kchodorow.com/blog/2011/08/11/php-extensions-made-eldrich-installing-php/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;php扩展允许你在php中使用几乎所有的C/C++代码，这里有4个部分关于这个教程。&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;编译安装调试模式的PHP&lt;/li&gt;
+&lt;li&gt;hello world！，你的第一个php扩展&lt;/li&gt;
+&lt;li&gt;开始简单使用C API &lt;/li&gt;
+&lt;li&gt;使用C 创建php对象&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="php" scheme="http://jamlee.cn/tags/php/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>32bit下gogs的编译安装</title>
+    <link href="http://jamlee.cn/2015/02/22/32bit%E4%B8%8Bgogs%E7%9A%84%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/"/>
+    <id>http://jamlee.cn/2015/02/22/32bit下gogs的编译安装/</id>
+    <published>2015-02-22T07:45:52.000Z</published>
+    <updated>2016-03-05T03:19:55.000Z</updated>
+    
+    <content type="html">&lt;p&gt;　　按照官方的文档，我并不能安装好gogs，刚开始我使用的是64位的二进制发行版，在我的虚拟机上安装成功，但是我还有一台32位的老机子，只有自己编译安装了。&lt;br&gt;　　安装官方的文档使用gopm 直接安装失败，原因是需要翻墙，后来我使用cow代理，goagent代理，都发现下载一些依赖失败，主要的是golang.org上的依赖下不下来，导致安装失败。&lt;br&gt;　　后来在这个地方下载gogs编译包 : &lt;a href=&quot;http://gopm.io/github.com/gogits/gogs&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://gopm.io/github.com/gogits/gogs&lt;/a&gt;&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;  下载好了，根据官方的文档,自己建立文件夹：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mkdir -p  $GOPATH/src/github.com/gogits/gogs
+cd $GOPATH/src/github.com/gogits/gogs
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;　　然后把gogs的编译包拷贝进去:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ls $GOPATH/src/github.com/gogits/gogs
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;cmd              data    gogs.go  modules    README_ZH.md  wercker.yml&lt;br&gt;conf             docker  LICENSE  packager   routers&lt;br&gt;CONTRIBUTING.md  etc     log      public     scripts&lt;br&gt;custom           models   README.md  templates&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;ok，在$GOPATH/src/github.com/gogits/gogs下:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;go build
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;但是会提示你缺一些包，所以你可以到 &lt;a href=&quot;http://gopm.io/download&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://gopm.io/download&lt;/a&gt; 下载,相关的包放在 $GOPATH/src/golang.org/下，看我的包结构，主要依赖于&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;golang.org/x/net&lt;br&gt;golang.org/x/text&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;ls  $GOPATH/src/golang.org/
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;.&lt;br&gt;└── x&lt;br&gt;    ├── net&lt;br&gt;    │   ├── context&lt;br&gt;    │   ├── dict&lt;br&gt;    │   ├── html&lt;br&gt;    │   │   ├── atom&lt;br&gt;    │   │   ├── charset&lt;br&gt;    │   │   │   └── testdata&lt;br&gt;    │   │   └── testdata&lt;br&gt;    │   │       └── webkit&lt;br&gt;    │   │           └── scripted&lt;br&gt;    │   ├── icmp&lt;br&gt;    │   ├── idna&lt;br&gt;    │   ├── internal&lt;br&gt;    │   │   ├── iana&lt;br&gt;    │   │   └── nettest&lt;br&gt;    │   ├── ipv4&lt;br&gt;    │   ├── ipv6&lt;br&gt;    │   ├── netutil&lt;br&gt;    │   ├── proxy&lt;br&gt;    │   ├── publicsuffix&lt;br&gt;    │   ├── spdy&lt;br&gt;    │   ├── webdav&lt;br&gt;    │   └── websocket&lt;br&gt;    └── text&lt;br&gt;        ├── cases&lt;br&gt;        ├── cldr&lt;br&gt;        ├── collate&lt;br&gt;        │   ├── build&lt;br&gt;        │   ├── colltab&lt;br&gt;        │   └── tools&lt;br&gt;        │       └── colcmp&lt;br&gt;        ├── display&lt;br&gt;        ├── encoding&lt;br&gt;        │   ├── charmap&lt;br&gt;        │   ├── japanese&lt;br&gt;        │   ├── korean&lt;br&gt;        │   ├── simplifiedchinese&lt;br&gt;        │   ├── testdata&lt;br&gt;        │   ├── traditionalchinese&lt;br&gt;        │   └── unicode&lt;br&gt;        ├── internal&lt;br&gt;        │   ├── triegen&lt;br&gt;        │   └── ucd&lt;br&gt;        ├── language&lt;br&gt;        ├── transform&lt;br&gt;        └── unicode&lt;br&gt;            └── norm&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;解决了依赖后，在进入 $GOPATH/src/github.com/gogits/gogs目录&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;go build
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;目录下生成了gogs，然后&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./gogs web
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;全部搞定了，到此编译完成。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;需转载，请联系作者 jamlee 授权&lt;br&gt;&lt;strong&gt;联系方式&lt;/strong&gt;&lt;br&gt;email ：jamlee@jamlee.cn&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;　　按照官方的文档，我并不能安装好gogs，刚开始我使用的是64位的二进制发行版，在我的虚拟机上安装成功，但是我还有一台32位的老机子，只有自己编译安装了。&lt;br&gt;　　安装官方的文档使用gopm 直接安装失败，原因是需要翻墙，后来我使用cow代理，goagent代理，都发现下载一些依赖失败，主要的是golang.org上的依赖下不下来，导致安装失败。&lt;br&gt;　　后来在这个地方下载gogs编译包 : &lt;a href=&quot;http://gopm.io/github.com/gogits/gogs&quot;&gt;http://gopm.io/github.com/gogits/gogs&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="go" scheme="http://jamlee.cn/tags/go/"/>
+    
+      <category term="git" scheme="http://jamlee.cn/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2014年终总结</title>
+    <link href="http://jamlee.cn/2015/02/05/2014%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/"/>
+    <id>http://jamlee.cn/2015/02/05/2014年终总结/</id>
+    <published>2015-02-05T04:50:07.000Z</published>
+    <updated>2016-03-05T03:19:55.000Z</updated>
+    
+    <content type="html">&lt;p&gt;　　年关将至，许多IT从业者都喜欢写下过去的一年里感慨，做个年终总结，那我也学习下IT前辈们，说说我在这过去的一年里我的那些遭遇。&lt;/p&gt;
+&lt;p&gt;　　就在写下这篇文章前些天，我一个亲人在武汉的工地上去世了，明明是身体多么结实的人，说没了就没了，原因就是因为脑溢血突发，人生在世几多唏嘘，好好注意自己的身体才是真正要紧的。这是我第一次以晚辈的身份去参加葬礼，穿上那孝衣。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;　　感到高兴的事情，我记得的只有两件，一件是我找到一份远程工作，经理人不错，带着我学了不少东西，关于企业的那些东西，工作流程那些，让我这个毛头小子也能自食其力，一个月可以赚到自己的生活费，在这里我对这位开明的经理说声谢谢，很很少有人愿意去相信一个素不相识的人。另一件事就是，和我的室友还有另外两个同学办了一个自己的淘宝店，是关于给一些中小企业建立门户网站的店铺。事情主要是我和我的室友春哥负责置办，后来拉进两个富有激情的同学疯子和菊花凯，虽然春哥或许不是一个很合适做技术的人，但是我觉得他还是很有闯劲一个人，或许我们做的东西拿出来算不上什么高大上的技术，但是满足一些企业的需要（一些crm或者cms）是绝对ok的。很多人有很高的技术，但是就是走不出这一步，就这个市场我们可以做的东西很多，一味的追求高大上的技术不是我想要的，我写程序的追求是为了给这个社会给其他人带来方便，所以我还是很欣赏与感谢春哥的，我的良师益友，给我的帮助很大。&lt;/p&gt;
+&lt;p&gt;　　另外对我很重要的几个个人我必须得提一提，分别是熊豹，黄埔，邓敏捷，都是我的学长。我的编程经历其实一开始要从高一说起，但是在高三和大一期间一些压力，抹去了一些我心里那些激情，原来高中一些写程序的网友，走的走，散的散，只因为高考，因为一些网友大多也是高中的，高考打去了他们的热情，他们有的打工去了，选择了自己的路，在一起里聊天的时候，似乎没有什么话题了。那一段时间，我基本没写什么项目，只是看看v2ex和csdn上的一些东西。自从在学校偶然相识了这几位学长，我很兴奋，他们都是富有分享精神的开发者。和这些学长在一起，学到了很多。&lt;/p&gt;
+&lt;p&gt;　　然后想吐槽一点的是在这个寒假里，过得不是很愉快，或者是说非常不愉快，不知道为什么，父母和亲戚们总是觉得我过得很轻松，很闲。他们知道我每天大概会睡到早上十点钟，却不知道我晚上总是一点钟睡觉，因为白天外面放鞭炮的实在是太吵了，他们知道我一坐在火堆旁就掏出手机看，却不知道手机上的全是推库、feedly、goreader。我自认为我已经还算是够努力的人，加上每天还有和团队里小伙伴们那些约定的工作要做，公司里的事要做。亲戚们和父母都是做些生意的，他们总是指望着我去给他们忙的时候帮上一把力，但是我实在是有自己的事业想自己去打拼。可是亲戚们不这么认为，父母不这么认为，他们只知道我在电脑面前做些轻松活，是个大闲人。一圈圈人都责骂我懒，不懂事，有时间也不去帮忙。或许这就是别人不理解IT从业者的那些悲哀吧。&lt;/p&gt;
+&lt;p&gt;　　　最后说点，过年了，我相信在新的一年里，自己的水平能够得到提升，不能在原地踏步，能够认识到更多富有激情的程序猿，从这些人的身上，真的学到的比我阅读的书籍多百倍。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;　　年关将至，许多IT从业者都喜欢写下过去的一年里感慨，做个年终总结，那我也学习下IT前辈们，说说我在这过去的一年里我的那些遭遇。&lt;/p&gt;
+&lt;p&gt;　　就在写下这篇文章前些天，我一个亲人在武汉的工地上去世了，明明是身体多么结实的人，说没了就没了，原因就是因为脑溢血突发，人生在世几多唏嘘，好好注意自己的身体才是真正要紧的。这是我第一次以晚辈的身份去参加葬礼，穿上那孝衣。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="life" scheme="http://jamlee.cn/tags/life/"/>
+    
+  </entry>
+  
+</feed>
