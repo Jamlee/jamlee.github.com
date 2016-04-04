@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://jamlee.cn/"/>
-  <updated>2016-04-04T07:11:02.000Z</updated>
+  <updated>2016-04-04T07:29:07.000Z</updated>
   <id>http://jamlee.cn/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://jamlee.cn/2016/04/04/NET-Core-%E5%88%9D%E8%AF%95%E6%B0%B4/"/>
     <id>http://jamlee.cn/2016/04/04/NET-Core-初试水/</id>
     <published>2016-04-04T07:08:43.000Z</published>
-    <updated>2016-04-04T07:11:02.000Z</updated>
+    <updated>2016-04-04T07:29:07.000Z</updated>
     
     <content type="html">&lt;h2 id=&quot;什么是-NET-Core&quot;&gt;&lt;a href=&quot;#什么是-NET-Core&quot; class=&quot;headerlink&quot; title=&quot;什么是.NET Core&quot;&gt;&lt;/a&gt;什么是.NET Core&lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;项目地址：  &lt;a href=&quot;https://github.com/dotnet/core&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;.NET Core&lt;/a&gt;&lt;/p&gt;
@@ -39,20 +39,43 @@
 &lt;p&gt;NOTE：根据官方的文档，有的时候.NET Core 是指 .Net Core 这个单独的项目，但是更多的时候它是指整个平台(.NET Core Platform)的实现。还有注意&lt;code&gt;.NET Platform&lt;/code&gt; 和 &lt;code&gt;.NET Framework&lt;/code&gt;是两码事，如果说&lt;code&gt;.NET Platform&lt;/code&gt;是一个API标准集，&lt;code&gt;.NET Framework&lt;/code&gt; ，&lt;code&gt;.NET Core&lt;/code&gt; 分别是他的实现。&lt;/p&gt;
 &lt;p&gt;引用：&lt;a href=&quot;http://dotnet.github.io/about/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方解释&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&quot;方法一：直接安装二进制包&quot;&gt;&lt;a href=&quot;#方法一：直接安装二进制包&quot; class=&quot;headerlink&quot; title=&quot;方法一：直接安装二进制包&quot;&gt;&lt;/a&gt;方法一：直接安装二进制包&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;./1459595092366.png&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;方法一：直接安装二进制包&quot;&gt;&lt;a href=&quot;#方法一：直接安装二进制包&quot; class=&quot;headerlink&quot; title=&quot;方法一：直接安装二进制包&quot;&gt;&lt;/a&gt;方法一：直接安装二进制包&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/1459595092366.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;p&gt;使用编译好的sdk即可：&lt;br&gt;&lt;a href=&quot;https://dotnetcli.blob.core.windows.net/dotnet/beta/Binaries/Latest/dotnet-dev-ubuntu-x64.latest.tar.gz&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://dotnetcli.blob.core.windows.net/dotnet/beta/Binaries/Latest/dotnet-dev-ubuntu-x64.latest.tar.gz&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;最新来这里下载：&lt;a href=&quot;https://github.com/dotnet/cli#installers-and-binaries&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/dotnet/cli#installers-and-binaries&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;方法二：-使用运行时管理器&quot;&gt;&lt;a href=&quot;#方法二：-使用运行时管理器&quot; class=&quot;headerlink&quot; title=&quot;方法二： 使用运行时管理器&quot;&gt;&lt;/a&gt;方法二： 使用运行时管理器&lt;/h2&gt;&lt;p&gt;使用dnvm来管理运行时的版本，就和&lt;code&gt;rvm&lt;/code&gt;，&lt;code&gt;nvm&lt;/code&gt;一样。&lt;br&gt;你可以使用mono或者coreclr提供的运行时环境运行c#。&lt;br&gt;&lt;img src=&quot;./1459593046294.png&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;./1459593130209.png&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
-&lt;h2 id=&quot;问题解答&quot;&gt;&lt;a href=&quot;#问题解答&quot; class=&quot;headerlink&quot; title=&quot;问题解答&quot;&gt;&lt;/a&gt;问题解答&lt;/h2&gt;&lt;p&gt;什么是dnx：&lt;br&gt;&lt;a href=&quot;http://docs.asp.net/en/latest/dnx/overview.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://docs.asp.net/en/latest/dnx/overview.html&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;mono和.net core 的区别是什么？&lt;br&gt;mono是完全的另一套 .net 平台（注意这里是&lt;strong&gt;平台不是框架&lt;/strong&gt;)的实现，其中包含 &lt;code&gt;C# Compiler&lt;/code&gt; , &lt;code&gt;Mono Runtime&lt;/code&gt;, &lt;code&gt;Base Class Library&lt;/code&gt;, &lt;code&gt;Mono Class Library&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;引用：&lt;a href=&quot;https://github.com/dotnet/coreclr/tree/master/Documentation&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/dotnet/coreclr/tree/master/Documentation&lt;/a&gt;&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h2 id=&quot;方法二：-使用运行时管理器&quot;&gt;&lt;a href=&quot;#方法二：-使用运行时管理器&quot; class=&quot;headerlink&quot; title=&quot;方法二： 使用运行时管理器&quot;&gt;&lt;/a&gt;方法二： 使用运行时管理器&lt;/h2&gt;&lt;p&gt;使用dnvm来管理运行时的版本，就和&lt;code&gt;rvm&lt;/code&gt;，&lt;code&gt;nvm&lt;/code&gt;一样。&lt;br&gt;你可以使用mono或者coreclr提供的运行时环境运行c#。&lt;br&gt;&lt;img src=&quot;/images/1459593046294.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/1459593130209.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;问题解答&quot;&gt;&lt;a href=&quot;#问题解答&quot; class=&quot;headerlink&quot; title=&quot;问题解答&quot;&gt;&lt;/a&gt;问题解答&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;什么是dnx：&lt;br&gt;&lt;a href=&quot;http://docs.asp.net/en/latest/dnx/overview.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://docs.asp.net/en/latest/dnx/overview.html&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;mono和.net core 的区别是什么？&lt;br&gt;mono是完全的另一套 .net 平台（注意这里是&lt;strong&gt;平台不是框架&lt;/strong&gt;)的实现，其中包含 &lt;code&gt;C# Compiler&lt;/code&gt; , &lt;code&gt;Mono Runtime&lt;/code&gt;, &lt;code&gt;Base Class Library&lt;/code&gt;, &lt;code&gt;Mono Class Library&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;参考文章：&lt;br&gt;coreclr官方文档：&lt;a href=&quot;https://github.com/dotnet/coreclr/tree/master/Documentation&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/dotnet/coreclr/tree/master/Documentation&lt;/a&gt;&lt;/p&gt;
 </content>
     
     <summary type="html">
     
       &lt;h2 id=&quot;什么是-NET-Core&quot;&gt;&lt;a href=&quot;#什么是-NET-Core&quot; class=&quot;headerlink&quot; title=&quot;什么是.NET Core&quot;&gt;&lt;/a&gt;什么是.NET Core&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;项目地址：  &lt;a href=&quot;h
+&lt;p&gt;项目地址：  &lt;a href=&quot;https://github.com/dotnet/core&quot;&gt;.NET Core&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;code&gt;.NET Platform&lt;/code&gt; 是一个windows上的一个开发平台规范总称， 刚开始只有windows上的&lt;code&gt;.NET Framework&lt;/code&gt;实现，后面出现了跨平台的实现，分别是&lt;code&gt;Mono Platform&lt;/code&gt;和&lt;code&gt;.Net Core Platform&lt;/code&gt;，它们都提供了&lt;code&gt;CLR&lt;/code&gt;运行时和&lt;code&gt;C#&lt;/code&gt;编译器等的实现, 后者是官方给出的实现。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;.NET Core&lt;/code&gt; 由 &lt;code&gt;CoreCLR&lt;/code&gt; 和 &lt;code&gt;CoreFx&lt;/code&gt;两大部分组成，&lt;code&gt;Roslyn Complier&lt;/code&gt; 和 &lt;code&gt;LLILC&lt;/code&gt;是 用于和&lt;code&gt;.NET Core&lt;/code&gt; 一起支持 &lt;code&gt;.NET Core Platform&lt;/code&gt;的项目。&lt;/p&gt;
+&lt;p&gt;综上所述，.NET Core Platform 的组件有&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;基本类库 （CoreFx提供）&lt;/li&gt;
+&lt;li&gt;CoreCLR 运行时 和 RyuJIT 编译器（CoreCLR 项目提供）&lt;/li&gt;
+&lt;li&gt;Roslyn compiler （Roslyn 项目 提供）&lt;/li&gt;
+&lt;li&gt;CLI tools&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所有的这些项目都在：&lt;a href=&quot;https://github.com/dotnet/&quot;&gt;https://github.com/dotnet/&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;NOTE：根据官方的文档，有的时候.NET Core 是指 .Net Core 这个单独的项目，但是更多的时候它是指整个平台(.NET Core Platform)的实现。还有注意&lt;code&gt;.NET Platform&lt;/code&gt; 和 &lt;code&gt;.NET Framework&lt;/code&gt;是两码事，如果说&lt;code&gt;.NET Platform&lt;/code&gt;是一个API标准集，&lt;code&gt;.NET Framework&lt;/code&gt; ，&lt;code&gt;.NET Core&lt;/code&gt; 分别是他的实现。&lt;/p&gt;
+&lt;p&gt;引用：&lt;a href=&quot;http://dotnet.github.io/about/&quot;&gt;官方解释&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;方法一：直接安装二进制包&quot;&gt;&lt;a href=&quot;#方法一：直接安装二进制包&quot; class=&quot;headerlink&quot; title=&quot;方法一：直接安装二进制包&quot;&gt;&lt;/a&gt;方法一：直接安装二进制包&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/1459595092366.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;使用编译好的sdk即可：&lt;br&gt;&lt;a href=&quot;https://dotnetcli.blob.core.windows.net/dotnet/beta/Binaries/Latest/dotnet-dev-ubuntu-x64.latest.tar.gz&quot;&gt;https://dotnetcli.blob.core.windows.net/dotnet/beta/Binaries/Latest/dotnet-dev-ubuntu-x64.latest.tar.gz&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;最新来这里下载：&lt;a href=&quot;https://github.com/dotnet/cli#installers-and-binaries&quot;&gt;https://github.com/dotnet/cli#installers-and-binaries&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
