@@ -4,24 +4,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>docker与精彩的shell | JamLee&#39;s Code Style</title>
+  <title>Archives: 2016/4 | JamLee&#39;s Code Style</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="0x1:删除所有标签为none的镜像1for i in `sudo docker images|grep \&amp;lt;none\&amp;gt;|awk &apos;&amp;#123;print $3&amp;#125;&apos;`;do sudo docker rmi $i;done
-或者
-1docker images|grep \&amp;lt;none\&amp;gt;|awk &apos;&amp;#123;print $3&amp;#125;&apos; | xargs dock">
-<meta property="og:type" content="article">
-<meta property="og:title" content="docker与精彩的shell">
-<meta property="og:url" content="http://jamlee.cn/2015/03/22/docker与精彩的shell/index.html">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="JamLee's Code Style">
+<meta property="og:url" content="http://jamlee.cn/archives/2016/04/index.html">
 <meta property="og:site_name" content="JamLee's Code Style">
-<meta property="og:description" content="0x1:删除所有标签为none的镜像1for i in `sudo docker images|grep \&amp;lt;none\&amp;gt;|awk &apos;&amp;#123;print $3&amp;#125;&apos;`;do sudo docker rmi $i;done
-或者
-1docker images|grep \&amp;lt;none\&amp;gt;|awk &apos;&amp;#123;print $3&amp;#125;&apos; | xargs dock">
-<meta property="og:updated_time" content="2016-03-05T04:43:10.000Z">
+<meta property="og:description">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="docker与精彩的shell">
-<meta name="twitter:description" content="0x1:删除所有标签为none的镜像1for i in `sudo docker images|grep \&amp;lt;none\&amp;gt;|awk &apos;&amp;#123;print $3&amp;#125;&apos;`;do sudo docker rmi $i;done
-或者
-1docker images|grep \&amp;lt;none\&amp;gt;|awk &apos;&amp;#123;print $3&amp;#125;&apos; | xargs dock">
+<meta name="twitter:title" content="JamLee's Code Style">
+<meta name="twitter:description">
 <meta name="twitter:creator" content="@webboy89860">
   
     <link rel="alternative" href="/atom.xml" title="JamLee&#39;s Code Style" type="application/atom+xml">
@@ -81,74 +74,39 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-docker与精彩的shell" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/03/22/docker与精彩的shell/" class="article-date">
-  <time datetime="2015-03-22T04:30:18.000Z" itemprop="datePublished">2015-03-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+      <section id="main">
   
-    <h1 class="article-title" itemprop="name">
-      docker与精彩的shell
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2016" class="archive-year">2016</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2016/04/04/NET-Core-初试水/" class="archive-article-date">
+  <time datetime="2016-04-04T07:08:43.000Z" itemprop="datePublished">Apr 4</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2016/04/04/NET-Core-初试水/">.NET Core 初试水</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="0x1-删除所有标签为none的镜像"><a href="#0x1-删除所有标签为none的镜像" class="headerlink" title="0x1:删除所有标签为none的镜像"></a>0x1:删除所有标签为none的镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `sudo docker images|grep \&lt;none\&gt;|awk <span class="string">'&#123;print $3&#125;'</span>`;<span class="keyword">do</span> sudo docker rmi <span class="variable">$i</span>;<span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-<p>或者</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images|grep \&lt;none\&gt;|awk <span class="string">'&#123;print $3&#125;'</span> | xargs docker rmi</span><br></pre></td></tr></table></figure>
- <a id="more"></a>
-<h3 id="0x2-Dockerfile换源的简单方法"><a href="#0x2-Dockerfile换源的简单方法" class="headerlink" title="0x2:Dockerfile换源的简单方法"></a>0x2:Dockerfile换源的简单方法</h3><p>Ubuntu添加：</p>
-<pre><code>RUN sed -i &apos;s/http:\/\/archive\.ubuntu\.com\/ubuntu\//http:\/\/mirrors\.163\.com\/ubuntu\//g&apos; /etc/apt/sources.list
-</code></pre><p>待续。。。。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://jamlee.cn/2015/03/22/docker与精彩的shell/" data-id="cimlnrnj30005y6w2pmogch3b" class="article-share-link" data-share="baidu" data-title="docker与精彩的shell">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
-
-    </footer>
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2015/04/12/docker特权模式的影响/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">
-        
-          docker特权模式的影响
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015/03/04/PHP扩展开发之路-二/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">PHP扩展开发之路(二)</div>
-    </a>
-  
-</nav>
-
-  
 </article>
-
+  
+  
+    </div></section>
+  
 </section>
       
       <aside id="sidebar">
