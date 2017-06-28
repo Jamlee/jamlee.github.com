@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://jamlee.cn/"/>
-  <updated>2017-02-03T06:51:11.554Z</updated>
+  <updated>2017-02-15T14:47:05.248Z</updated>
   <id>http://jamlee.cn/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://jamlee.cn/2017/02/03/2016%E5%B9%B4%E5%BA%A6%E5%B0%8F%E7%BB%93/"/>
     <id>http://jamlee.cn/2017/02/03/2016年度小结/</id>
     <published>2017-02-03T06:04:32.000Z</published>
-    <updated>2017-02-03T06:51:11.554Z</updated>
+    <updated>2017-02-15T14:47:05.248Z</updated>
     
     <content type="html">&lt;p&gt;回看射雕处，千里暮云平。&lt;/p&gt;
 &lt;p&gt;自2016年初就已辞掉之前关于app后端开发相关的工作，转向企业级Docker PaaS平台相关的工作。前半年依然在学校一边上课一边远程完成工作，到7月份学校同意不再上课后正式开始全职地在公司工作，相比上半年的工作模式，在企业中还是过得较为充实，每个月做了哪些事情都历历在目。去年在航桓科技，同事都是年纪相仿的，且公司规模不大，扁平化的管理模式相当自由，工作经常会和大家一起慷慨激昂地讨论问题、解决问题 。今年先在硬件分销商工作，后入职传统IT行业 EMC，EMC的同事都是已经在IT行业摸爬滚打十年的前辈，和前辈们一起工作则是完全不同的体验，少了盲目的开坑入坑，多了长期的计划、规范、商业战略。&lt;/p&gt;
@@ -46,7 +46,7 @@
     <link href="http://jamlee.cn/2016/04/04/NET-Core-%E5%88%9D%E8%AF%95%E6%B0%B4/"/>
     <id>http://jamlee.cn/2016/04/04/NET-Core-初试水/</id>
     <published>2016-04-04T07:08:43.000Z</published>
-    <updated>2016-04-04T07:29:07.000Z</updated>
+    <updated>2017-02-15T14:47:05.246Z</updated>
     
     <content type="html">&lt;h2 id=&quot;什么是-NET-Core&quot;&gt;&lt;a href=&quot;#什么是-NET-Core&quot; class=&quot;headerlink&quot; title=&quot;什么是.NET Core&quot;&gt;&lt;/a&gt;什么是.NET Core&lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;项目地址：  &lt;a href=&quot;https://github.com/dotnet/core&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;.NET Core&lt;/a&gt;&lt;/p&gt;
@@ -113,7 +113,7 @@
     <link href="http://jamlee.cn/2015/10/05/yeild-%E7%BC%96%E5%86%99web%E6%9C%8D%E5%8A%A1%E7%A8%8B%E5%BA%8F/"/>
     <id>http://jamlee.cn/2015/10/05/yeild-编写web服务程序/</id>
     <published>2015-10-05T03:37:38.000Z</published>
-    <updated>2016-04-01T03:27:56.000Z</updated>
+    <updated>2017-02-15T14:47:05.247Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;php在php5.5的时候引入了generator和coroutine,当然这和node的event loop还是有比较大的区别的。 yield 表达式 和php封装过系统底层的函数(select函数)可以一起写出非阻塞的io。&lt;/p&gt;
@@ -164,7 +164,7 @@
     <link href="http://jamlee.cn/2015/06/24/docker%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E6%98%93%E4%BA%8E%E5%88%86%E4%BA%AB%E5%92%8C%E6%9B%B4%E6%96%B0%E7%9A%84composer%E7%BC%93%E5%AD%98%E5%BA%93/"/>
     <id>http://jamlee.cn/2015/06/24/docker快速搭建易于分享和更新的composer缓存库/</id>
     <published>2015-06-24T04:46:50.000Z</published>
-    <updated>2016-03-05T03:19:55.000Z</updated>
+    <updated>2017-02-15T14:47:05.245Z</updated>
     
     <content type="html">&lt;hr&gt;
 &lt;p&gt;&lt;strong&gt;前言：&lt;/strong&gt;&lt;/p&gt;
@@ -229,7 +229,7 @@
     <link href="http://jamlee.cn/2015/04/12/docker%E7%89%B9%E6%9D%83%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%BD%B1%E5%93%8D/"/>
     <id>http://jamlee.cn/2015/04/12/docker特权模式的影响/</id>
     <published>2015-04-12T06:45:21.000Z</published>
-    <updated>2016-03-05T03:19:55.000Z</updated>
+    <updated>2017-02-15T14:47:05.247Z</updated>
     
     <content type="html">&lt;p&gt;起因&lt;/p&gt;
 &lt;p&gt;本来我想在docker里面做些测试和监控，于是我用到了两个工具tcpdump和strace。想要使用strace就必须开启特权模式，但是我发现开启之后tcpdump就无法使用了。&lt;/p&gt;
@@ -258,7 +258,7 @@
     <link href="http://jamlee.cn/2015/03/22/docker%E4%B8%8E%E7%B2%BE%E5%BD%A9%E7%9A%84shell/"/>
     <id>http://jamlee.cn/2015/03/22/docker与精彩的shell/</id>
     <published>2015-03-22T04:30:18.000Z</published>
-    <updated>2016-03-05T04:43:10.000Z</updated>
+    <updated>2017-02-15T14:47:05.246Z</updated>
     
     <content type="html">&lt;h3 id=&quot;0x1-删除所有标签为none的镜像&quot;&gt;&lt;a href=&quot;#0x1-删除所有标签为none的镜像&quot; class=&quot;headerlink&quot; title=&quot;0x1:删除所有标签为none的镜像&quot;&gt;&lt;/a&gt;0x1:删除所有标签为none的镜像&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; i &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; `sudo docker images|grep \&amp;lt;none\&amp;gt;|awk &lt;span class=&quot;string&quot;&gt;&#39;&amp;#123;print $3&amp;#125;&#39;&lt;/span&gt;`;&lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt; sudo docker rmi &lt;span class=&quot;variable&quot;&gt;$i&lt;/span&gt;;&lt;span class=&quot;keyword&quot;&gt;done&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;或者&lt;/p&gt;
@@ -287,7 +287,7 @@
     <link href="http://jamlee.cn/2015/03/04/PHP%E6%89%A9%E5%B1%95%E5%BC%80%E5%8F%91%E4%B9%8B%E8%B7%AF-%E4%BA%8C/"/>
     <id>http://jamlee.cn/2015/03/04/PHP扩展开发之路-二/</id>
     <published>2015-03-03T18:08:28.000Z</published>
-    <updated>2016-03-05T03:19:55.000Z</updated>
+    <updated>2017-02-15T14:47:05.244Z</updated>
     
     <content type="html">&lt;p&gt;##0x2 hello world！，你的第一个php扩展##&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;阅读前必看小贴士：&lt;/em&gt;&lt;/p&gt;
@@ -440,7 +440,7 @@ In his house at R&amp;apos;lyeh dead Cthulhu waits dreaming.
     <link href="http://jamlee.cn/2015/02/24/php%E6%89%A9%E5%B1%95%E5%BC%80%E5%8F%91%E4%B9%8B%E8%B7%AF-%E4%B8%80/"/>
     <id>http://jamlee.cn/2015/02/24/php扩展开发之路-一/</id>
     <published>2015-02-24T04:46:50.000Z</published>
-    <updated>2016-03-05T03:19:55.000Z</updated>
+    <updated>2017-02-15T14:47:05.245Z</updated>
     
     <content type="html">&lt;hr&gt;
 &lt;p&gt;&lt;strong&gt;前言：&lt;/strong&gt;&lt;/p&gt;
@@ -501,7 +501,7 @@ $ PATH=$PHPDIR/install-debug-zts/bin:$PATH
     <link href="http://jamlee.cn/2015/02/22/32bit%E4%B8%8Bgogs%E7%9A%84%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/"/>
     <id>http://jamlee.cn/2015/02/22/32bit下gogs的编译安装/</id>
     <published>2015-02-22T07:45:52.000Z</published>
-    <updated>2016-03-05T03:19:55.000Z</updated>
+    <updated>2017-02-15T14:47:05.246Z</updated>
     
     <content type="html">&lt;p&gt;　　按照官方的文档，我并不能安装好gogs，刚开始我使用的是64位的二进制发行版，在我的虚拟机上安装成功，但是我还有一台32位的老机子，只有自己编译安装了。&lt;br&gt;　　安装官方的文档使用gopm 直接安装失败，原因是需要翻墙，后来我使用cow代理，goagent代理，都发现下载一些依赖失败，主要的是golang.org上的依赖下不下来，导致安装失败。&lt;br&gt;　　后来在这个地方下载gogs编译包 : &lt;a href=&quot;http://gopm.io/github.com/gogits/gogs&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://gopm.io/github.com/gogits/gogs&lt;/a&gt;&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -550,7 +550,7 @@ cd $GOPATH/src/github.com/gogits/gogs
     <link href="http://jamlee.cn/2015/02/05/2014%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/"/>
     <id>http://jamlee.cn/2015/02/05/2014年终总结/</id>
     <published>2015-02-05T04:50:07.000Z</published>
-    <updated>2016-03-05T03:19:55.000Z</updated>
+    <updated>2017-02-15T14:47:05.244Z</updated>
     
     <content type="html">&lt;p&gt;　　年关将至，许多IT从业者都喜欢写下过去的一年里感慨，做个年终总结，那我也学习下IT前辈们，说说我在这过去的一年里我的那些遭遇。&lt;/p&gt;
 &lt;p&gt;　　就在写下这篇文章前些天，我一个亲人在武汉的工地上去世了，明明是身体多么结实的人，说没了就没了，原因就是因为脑溢血突发，人生在世几多唏嘘，好好注意自己的身体才是真正要紧的。这是我第一次以晚辈的身份去参加葬礼，穿上那孝衣。&lt;/p&gt;
